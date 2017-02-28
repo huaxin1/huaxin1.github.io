@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>Examples</title>
+<style type="text/css">
+body,
+h2{
+	margin: 0;
+}
+#wrap{
+	width: 600px;
+	height: 400px;
+	margin: 30px auto;
+}
+#box{
+	width: 600px;
+	height: 400px;
+	position: relative;
+	perspective: 800px;
+}
+#div{
+	width: 600px;
+	height: 400px;
+	position: absolute;
+	left: 0;
+	top: 0;
+	transform-style: preserve-3d;
+	text-align: center;
+	transition: .4s;
+}
+#div img{
+	width: 600px;
+	height: 400px;
+	position: absolute;
+	left: 0;
+	top: 0;
+	/*transform-style: preserve-3d;*/
+}
+#div h2{
+	position: absolute;
+	left: 105px;
+	top: 70px;
+	width: 60%;
+	height: 60%;
+	font-size: 30px;
+	line-height: 200px;
+	font-family: "微软雅黑";
+	color: #000;
+	border: 10px solid blue;
+	transform-style: preserve-3d;
+	transform: translateZ(100px);
+	opacity: 0;
+}
+#box:hover h2{
+	transition: opacity 1s ease;
+	opacity: 1;
+}
+#haha{
+	width: 600px;
+	height: 400px;
+	position: absolute;
+	left: 0;
+	top: 0;
+	background: linear-gradient(0deg,rgba(255,255,255,.2) 0%,rgba(255,255,255,0) 80%);
+}
+</style>
+</head>
+<body>
+<div id="wrap">
+	<div id="box">
+		<div id="div">
+			<img src="1.jpg">
+			<h2>aaaaa</h2>
+			<div id="haha"></div>
+		</div>
+	</div>
+</div> 
+<script type="text/javascript" src="MTween.js"></script>
+<script type="text/javascript">
+	var box = document.getElementById('box');
+	var div = document.getElementById('div');
+	var text = div.querySelector('h2');
+	var shadow = document.getElementById('haha');
+	box.onmouseover = function() {
+		box.onmousemove = function(ev) {
+			var disX = ev.pageX - box.offsetLeft;
+			var disY = ev.pageY - box.offsetTop;
+			var x = ev.pageX - box.offsetWidth/2;
+			var y = ev.pageY - box.offsetHeight/2;
+			var hh = disY / box.offsetHeight;
+			var theta = Math.atan2(x,y);
+			var angle = theta*180/Math.PI - 90;
+			if(angle<0){
+				angle = angle + 360;
+			}
+			var rateX = (box.offsetWidth/2-disX)/(box.offsetWidth/2);
+			var rateY = (box.offsetHeight/2-disY)/(box.offsetHeight/2);
+			div.style.transform = 'rotateX('+rateY*10+'deg) rotateY('+-rateX*8+'deg)';
+			shadow.style.background = 'linear-gradient('+-angle+'deg,rgba(255,255,255,'+hh*.5+') 0%,rgba(255,255,255,0) 90%)';
+		}
+		box.onmouseout = function() {		
+			mTween(div,{rotateX:0,rotateY:0},100,'linear');
+			shadow.style.background = '';
+		}
+	}
+
+
+</script>   
+</body>
+</html>
